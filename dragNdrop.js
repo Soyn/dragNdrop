@@ -381,8 +381,8 @@ function dragNdrop(options) {
    */
   function dispatchEvent(name) {
     var eventing;
-    if(IE) {
-      eventing = document.createEvent('dragNdrop:' + name);
+    if(!IE) {
+      eventing = document.createEvent('CustomEvent');
       eventing.initEvent('dragNdrop:' + name, true, true);
     } else {
       eventing = new Event('dragNdrop:' + name);
