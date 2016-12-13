@@ -250,9 +250,14 @@ function dragNdrop(options) {
      */
     console.log('isElementInside params: ', element, container, drop);
     console.log('calculations, rect, scroll: ', container.getBoundingClientRect().top, window.scrollY);
+    var scroll = {
+      // fallback for IE
+      x: window.scrollY || document.documentElement.scrollTop,
+      y: window.scrollX || document.documentElement.scrollLeft
+    };
     var containerRect = {
-      top: container.getBoundingClientRect().top + window.scrollY,
-      left: container.getBoundingClientRect().left + window.scrollX
+      top: container.getBoundingClientRect().top + scroll.y,
+      left: container.getBoundingClientRect().left + scroll.x
     };
     var containerSize = {
       top: container.offsetHeight,
