@@ -269,7 +269,7 @@ function dragNdrop(options) {
     var rect = ['top', 'left', 'top', 'left'];
     var inside = [];
     for(var i = 0, il = rect.length; i < il; i++) {
-      console.log(elementRect, containerRect);
+      console.log(rect[i], elementRect[rect[i]], containerRect[rect[i]]);
       if(i < il/2) { // top, left
         if(elementRect[rect[i]] >= containerRect[rect[i]]) {
           inside.push(true);
@@ -290,6 +290,7 @@ function dragNdrop(options) {
     }
 
     // check manually instead of using .every to support <=IE9
+    console.log(inside[0], inside[1], inside[2], inside[3]);
     return (inside[0] && inside[1] && inside[2] && inside[3]) ? true : false;
   }
 
