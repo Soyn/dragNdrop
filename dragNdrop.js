@@ -422,18 +422,24 @@ function dragNdrop(options) {
     console.log('dispatch');
     var eventing;
     console.log('1');
-    if(IE) {
-      console.log('2');
-      eventing = document.createEvent('CustomEvent');
-      console.log('3');
-      eventing.initEvent('dragNdrop:' + name, true, true);
-      console.log('4');
-    } else {
+    if(!IE) {
+      console.log('1a');
       eventing = new Event('dragNdrop:' + name);
-      console.log('5');
+      console.log('2');
+      element.dispatchEvent(eventing);
+      console.log('2b');
+    } else {
+      console.log('1b');
+      //fallback for IE9 is document.createEvent. But for IE8 and below that does not work either.
+      if(document.createEvent) {
+        console.log('3');
+        eventing = document.createEvent('CustomEvent');
+        console.log('4');
+        eventing.initEvent('dragNdrop:' + name, true, true);
+        console.log('5');
+        element.dispatchEvent(eventing);
+      }
     }
-    console.log('6');
-    element.dispatchEvent(eventing);
     console.log('dispatched');
   }
 
