@@ -336,7 +336,7 @@ function dragNdrop(options) {
     }
 
     // check manually instead of using .every to support IE9-
-    return (inside[0] && inside[1] && inside[2] && inside[3]) ? true : false;
+    return (inside[0] && inside[1] && inside[2] && inside[3]);
   }
 
   //- Put Element Back
