@@ -114,7 +114,7 @@ function dragNdrop(options) {
   }
 
   //Event Listeners
-  if(document.addEventListener) {
+  if(!IE && document.addEventListener) {
     element.addEventListener('mousedown', eleMouseDown, false);
     element.addEventListener('touchstart', eleMouseDown, false);
   } else {
@@ -146,7 +146,7 @@ function dragNdrop(options) {
   //- add event listeners
   function addEventListeners() {
     //Add listeners
-    if(document.addEventListener) {
+    if(!IE && document.addEventListener) {
       document.addEventListener('mousemove', eleMouseMove, false);
       document.addEventListener('touchmove', eleMouseMove, false);
       document.addEventListener('mouseup', eleMouseUp, false);
@@ -357,7 +357,7 @@ function dragNdrop(options) {
   //- remove event listeners
   function removeEventListeners() {
     //remove listeners
-    if(document.addEventListener) {
+    if(!IE && document.addEventListener) {
       document.removeEventListener('mousemove', eleMouseMove, false);
       document.removeEventListener('touchmove', eleMouseMove, false);
       document.removeEventListener('mouseup', eleMouseUp, false);
