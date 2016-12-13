@@ -127,10 +127,13 @@ function dragNdrop(options) {
     console.log('start');
     dispatchEvent('start');
     removeClass(element, 'dragNdrop--stop');
+    console.log('1');
     addClass(element, 'dragNdrop--start');
+    console.log('2');
 
     // prevent text selection
     ev.preventDefault();
+    console.log('3');
     var event;
     if ('touches' in ev) { // slight adaptations for touches
       ev.preventDefault();
@@ -139,9 +142,12 @@ function dragNdrop(options) {
       event = ev;
     } // get first mouse position
     // clientX/Y fallback for IE8-
+    console.log('4');
     prevPos = { x: event.pageX || event.clientX, y: event.pageY || event.clientY };
+    console.log('5');
 
     addEventListeners();
+    console.log('6');
   }
 
   //- add event listeners
@@ -371,7 +377,7 @@ function dragNdrop(options) {
       document.detachEvent('onmouseup', eleMouseUp);
       document.detachEvent('touchend', eleMouseUp);
     }
-  };
+  }
 
   //- prepare drop
   function prepareDrop(element, dropZones) {
