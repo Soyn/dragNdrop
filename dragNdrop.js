@@ -114,7 +114,7 @@ function dragNdrop(options) {
   }
 
   //Event Listeners
-  if(!IE) {
+  if(document.addEventListener) {
     element.addEventListener('mousedown', eleMouseDown, false);
     element.addEventListener('touchstart', eleMouseDown, false);
   } else {
@@ -122,7 +122,7 @@ function dragNdrop(options) {
     element.attachEvent('touchstart', eleMouseDown);
   }
 
-  //Start
+  //- Start
   function eleMouseDown(ev) {
     dispatchEvent('start');
     removeClass(element, 'dragNdrop--stop');
@@ -140,19 +140,24 @@ function dragNdrop(options) {
     // clientX/Y fallback for IE8-
     prevPos = { x: event.pageX || event.clientX, y: event.pageY || event.clientY };
 
+    addEventListeners();
+  }
+
+  //- add event listeners
+  function addEventListeners() {
     //Add listeners
-    if(!IE) {
+    if(document.addEventListener) {
       document.addEventListener('mousemove', eleMouseMove, false);
       document.addEventListener('touchmove', eleMouseMove, false);
       document.addEventListener('mouseup', eleMouseUp, false);
       document.addEventListener('touchend', eleMouseUp, false);
     } else {
+      // support for IE8-
       document.attachEvent('onmousemove', eleMouseMove);
       document.attachEvent('touchmove', eleMouseMove);
       document.attachEvent('onmouseup', eleMouseUp);
       document.attachEvent('touchend', eleMouseUp);
     }
-
   }
   
   //- Styles
@@ -334,7 +339,7 @@ function dragNdrop(options) {
       });
     }
   }
-  
+
   //- Stop
   function eleMouseUp() {
     dispatchEvent('stop');
@@ -345,22 +350,26 @@ function dragNdrop(options) {
     if(dropZones) dropped = handleDrop(element, dropZones);
     if(callback) callback({element: element, dropped: dropped, dropZones: dropZones, constraints: constraints, customStyles: customStyles});
 
+    removeEventListeners();
+    if(!customStyles) document.body.style.cursor = 'inherit';
+  }
+
+  //- remove event listeners
+  function removeEventListeners() {
     //remove listeners
-    if(!IE) {
+    if(document.addEventListener) {
       document.removeEventListener('mousemove', eleMouseMove, false);
       document.removeEventListener('touchmove', eleMouseMove, false);
       document.removeEventListener('mouseup', eleMouseUp, false);
       document.removeEventListener('touchend', eleMouseUp, false);
     } else {
-      document.detachEvent('onmousemove', eleMouseMove, false);
-      document.detachEvent('touchmove', eleMouseMove, false);
-      document.detachEvent('onmouseup', eleMouseUp, false);
-      document.detachEvent('touchend', eleMouseUp, false);
+      // support for IE8-
+      document.detachEvent('onmousemove', eleMouseMove);
+      document.detachEvent('touchmove', eleMouseMove);
+      document.detachEvent('onmouseup', eleMouseUp);
+      document.detachEvent('touchend', eleMouseUp);
     }
-
-    //remove styles
-    if(!customStyles) document.body.style.cursor = 'inherit';
-  }
+  };
 
   //- prepare drop
   function prepareDrop(element, dropZones) {
