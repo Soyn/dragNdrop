@@ -288,7 +288,8 @@ function dragNdrop(options) {
       }
     }
 
-    return inside.every(function(e) { return e === true; });
+    // check manually instead of using .every to support <=IE9
+    return (inside[0] && inside[1] && inside[2] && inside[3]) ? true : false;
   }
 
   //- Put Element Back
@@ -359,22 +360,13 @@ function dragNdrop(options) {
       }
     }
 
+    // check manually instead of using .some to support <=IE9
     var droppedContainer = [];
-    function isDropped(element) {
-      if(element) {
-        droppedContainer.push(element);
-        return true;
-      } else {
-        return false;
-      }
+    for(var j = 0, jl = dropped.length; j < jl; j++) {
+      var el = dropped[j];
+      if(el) droppedContainer.push(el);
     }
-
-    if(dropped.some(isDropped)) {
-      console.log('some found', droppedContainer);
-      return droppedContainer;
-    } else {
-      return false;
-    }
+    return (droppedContainer.length > 0) ? droppedContainer : false;
   }
 
   /**
@@ -423,74 +415,4 @@ function dragNdrop(options) {
 
     }
   }
-
-  /**
-   * POLYFILLS
-   */
-  // Array.prototype.some
-  // Production steps of ECMA-262, Edition 5, 15.4.4.17
-  // Reference: http://es5.github.io/#x15.4.4.17
-  if (!Array.prototype.some) {
-    console.log('WARN: dragNdrop: polyfill for Array.prototype.some used');
-    Array.prototype.some = function(fun/*, thisArg*/) {
-      'use strict';
-
-      if (this === null) {
-        throw new TypeError('Array.prototype.some called on null or undefined');
-      }
-
-      if (typeof fun !== 'function') {
-        throw new TypeError();
-      }
-
-      var t = Object(this);
-      var len = t.length >>> 0;
-
-      var thisArg = arguments.length >= 2 ? arguments[1] : void 0;
-      for (var i = 0; i < len; i++) {
-        if (i in t && fun.call(thisArg, t[i], i, t)) {
-          return true;
-        }
-      }
-
-      return false;
-    };
-  }
-  // Array.prototype.every
-  // Reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every#Polyfill
-  if (!Array.prototype.every) {
-    console.log('WARN: dragNdrop: polyfill for Array.prototype.every used');
-    Array.prototype.every = function(callbackfn, thisArg) {
-      'use strict';
-      var T, k;
-
-      if (this == null) {
-        throw new TypeError('this is null or not defined');
-      }
-
-      var O = Object(this);
-      var len = O.length >>> 0;
-      if (typeof callbackfn !== 'function') {
-        throw new TypeError();
-      }
-      if (arguments.length > 1) {
-        T = thisArg;
-      }
-      k = 0;
-      while (k < len) {
-
-        var kValue;
-        if (k in O) {
-          kValue = O[k];
-          var testResult = callbackfn.call(T, kValue, k, O);
-          if (!testResult) {
-            return false;
-          }
-        }
-        k++;
-      }
-      return true;
-    };
-  }
-
 }
