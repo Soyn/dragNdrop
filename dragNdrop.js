@@ -124,6 +124,7 @@ function dragNdrop(options) {
 
   //- Start
   function eleMouseDown(ev) {
+    console.log('start');
     dispatchEvent('start');
     removeClass(element, 'dragNdrop--stop');
     addClass(element, 'dragNdrop--start');
@@ -145,6 +146,7 @@ function dragNdrop(options) {
 
   //- add event listeners
   function addEventListeners() {
+    console.log('addeventlisteners');
     //Add listeners
     if(!IE && document.addEventListener) {
       document.addEventListener('mousemove', eleMouseMove, false);
