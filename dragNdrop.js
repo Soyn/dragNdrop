@@ -264,8 +264,8 @@ function dragNdrop(options) {
       left: container.offsetWidth
     };
     var elementRect = {
-      top: element.getBoundingClientRect().top + window.scrollY,
-      left: element.getBoundingClientRect().left + window.scrollX
+      top: element.getBoundingClientRect().top + scroll.y,
+      left: element.getBoundingClientRect().left + scroll.x
     };
     var elementSize = {
       top: element.offsetHeight,
