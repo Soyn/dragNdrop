@@ -269,7 +269,7 @@ function dragNdrop(options) {
     var rect = ['top', 'left', 'top', 'left'];
     var inside = [];
     for(var i = 0, il = rect.length; i < il; i++) {
-      console.log(elementRect[rect[i]], containerRect[rect[i]]);
+      console.log(elementRect, containerRect);
       if(i < il/2) { // top, left
         if(elementRect[rect[i]] >= containerRect[rect[i]]) {
           inside.push(true);
