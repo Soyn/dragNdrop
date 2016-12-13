@@ -370,6 +370,7 @@ function dragNdrop(options) {
     }
 
     if(dropped.some(isDropped)) {
+      console.log('some found', droppedContainer);
       return droppedContainer;
     } else {
       return false;
