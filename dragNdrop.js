@@ -8,7 +8,22 @@ v1.0.0
  \__,_|_|  \__,_|\__, \_\ \/ \__,_|_|  \___/| .__/ 
                  |___/                      |_|    
 
- Custom Events:
+
+
+ ##Key-Features
+
+ - Add draggability to any DOM element
+ - Add corresponding drop containers
+ - Callback, Classes and Events available
+ - Awesome browser support, works even on IE8
+ - Ease of use
+ - Lightweight, only 1KB gzipped
+ - Free & open source under MIT License
+
+
+
+
+ Custom Events (only IE9+):
 
  ** dragNdrop:start
  ** dragNdrop:drag
@@ -81,8 +96,6 @@ function dragNdrop(options) {
   }
 
   //Setup
-  var IE = false;
-
   var element = options.element;
   var customStyles = options.customStyles || false;
   var constraints = options.constraints || false;
@@ -100,7 +113,7 @@ function dragNdrop(options) {
   var isIeLessThan10 = (div.getElementsByTagName('i').length == 1);
   if (isIeLessThan10) {
     console.log('WARNING: dragNdrop: a browser older than IE 10 detected! ', ' (use top/left position instead of transform, attachEvent instead of addEventListener and initEvent instead of new Event constructor)');
-    IE = true;
+    console.log('WARNING: dragNdrop: the tool will probably work but please do yourself a favor and update your browser');
     //internet explorer <9 does not support transform3d
     transform = false;
   }
@@ -412,13 +425,10 @@ function dragNdrop(options) {
    */
   function dispatchEvent(name) {
     var eventing;
-    console.log('check events');
     if(typeof Event === 'function') {
-      console.log('typeof');
       eventing = new Event('dragNdrop:' + name);
       element.dispatchEvent(eventing);
     } else {
-      console.log('not typeof');
       //fallback for IE9 is document.createEvent. But for IE8 and below that does not work either.
       if(document.createEvent) {
         eventing = document.createEvent('CustomEvent');
