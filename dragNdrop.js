@@ -109,7 +109,7 @@ function dragNdrop(options) {
   addClass(element, 'dragNdrop');
   if(dropZones) {
     for(var i = 0, il = dropZones.length; i < il; i++) {
-      addClass(dropZones[i], 'dragNdrop--dropzone');
+      addClass(dropZones[i], 'dragNdrop__dropzone');
     }
   }
 
