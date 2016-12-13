@@ -124,14 +124,13 @@ function dragNdrop(options) {
 
   //- Start
   function eleMouseDown(ev) {
-    console.log('start');
     dispatchEvent('start');
     removeClass(element, 'dragNdrop--stop');
-    console.log('1');
     addClass(element, 'dragNdrop--start');
-    console.log('2');
 
     // prevent text selection
+    console.log(ev);
+    console.log(ev.clientX);
     ev.preventDefault();
     console.log('3');
     var event;
@@ -307,7 +306,6 @@ function dragNdrop(options) {
     var rect = ['top', 'left', 'top', 'left'];
     var inside = [];
     for(var i = 0, il = rect.length; i < il; i++) {
-      console.log(rect[i], elementRect[rect[i]], containerRect[rect[i]]);
       if(i < il/2) { // top, left
         if(elementRect[rect[i]] >= containerRect[rect[i]]) {
           inside.push(true);
@@ -328,7 +326,6 @@ function dragNdrop(options) {
     }
 
     // check manually instead of using .every to support <=IE9
-    console.log(inside[0], inside[1], inside[2], inside[3]);
     return (inside[0] && inside[1] && inside[2] && inside[3]) ? true : false;
   }
 
@@ -403,7 +400,6 @@ function dragNdrop(options) {
       removeClass(dropZone, 'dragNdrop__dropzone--dropped');
 
       if(isElementInside(element, dropZone, true)) {
-        console.log(element, 'dropped into', dropZone);
         dispatchEvent('dropped');
         addClass(element, 'dragNdrop--dropped');
         addClass(dropZone, 'dragNdrop__dropzone--dropped');
@@ -419,28 +415,18 @@ function dragNdrop(options) {
    * HELPER FUNCTIONS
    */
   function dispatchEvent(name) {
-    console.log('dispatch');
     var eventing;
-    console.log('1');
     if(!IE) {
-      console.log('1a');
       eventing = new Event('dragNdrop:' + name);
-      console.log('2');
       element.dispatchEvent(eventing);
-      console.log('2b');
     } else {
-      console.log('1b');
       //fallback for IE9 is document.createEvent. But for IE8 and below that does not work either.
       if(document.createEvent) {
-        console.log('3');
         eventing = document.createEvent('CustomEvent');
-        console.log('4');
         eventing.initEvent('dragNdrop:' + name, true, true);
-        console.log('5');
         element.dispatchEvent(eventing);
       }
     }
-    console.log('dispatched');
   }
 
   function hasClass(el, className) {
