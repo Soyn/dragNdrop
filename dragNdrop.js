@@ -248,8 +248,8 @@ function dragNdrop(options) {
      * resized or moved on the fly. This also makes the function kinda context
      * independant.
      */
-    console.log(element, container, drop);
-    console.log(container.getBoundingClientRect().top, window.scrollY);
+    console.log('isElementInside params: ', element, container, drop);
+    console.log('calculations, rect, scroll: ', container.getBoundingClientRect().top, window.scrollY);
     var containerRect = {
       top: container.getBoundingClientRect().top + window.scrollY,
       left: container.getBoundingClientRect().left + window.scrollX
