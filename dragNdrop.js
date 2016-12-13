@@ -421,14 +421,18 @@ function dragNdrop(options) {
   function dispatchEvent(name) {
     console.log('dispatch');
     var eventing;
+    console.log('1');
     if(IE) {
+      console.log('2');
       eventing = document.createEvent('CustomEvent');
+      console.log('3');
       eventing.initEvent('dragNdrop:' + name, true, true);
-      console.log('IE');
+      console.log('4');
     } else {
       eventing = new Event('dragNdrop:' + name);
+      console.log('5');
     }
-    console.log('dispatch');
+    console.log('6');
     element.dispatchEvent(eventing);
     console.log('dispatched');
   }
