@@ -430,10 +430,11 @@ function dragNdrop(options) {
   // Production steps of ECMA-262, Edition 5, 15.4.4.17
   // Reference: http://es5.github.io/#x15.4.4.17
   if (!Array.prototype.some) {
+    console.log('WARN: dragNdrop: polyfill for Array.prototype.some used');
     Array.prototype.some = function(fun/*, thisArg*/) {
       'use strict';
 
-      if (this == null) {
+      if (this === null) {
         throw new TypeError('Array.prototype.some called on null or undefined');
       }
 
