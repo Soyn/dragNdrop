@@ -346,27 +346,21 @@ function dragNdrop(options) {
 
     var dropped = [];
     for (var i = 0; i < dropZones.length; i++) {
-      var dropElement = dropZones[i];
-      removeClass(dropElement, 'dragNdrop__dropzone--ready');
+      var dropZone = dropZones[i];
+      removeClass(dropZone, 'dragNdrop__dropzone--ready');
+      removeClass(dropZone, 'dragNdrop__dropzone--dropped');
 
-      if(isElementInside(element, dropElement, true)) {
+      if(isElementInside(element, dropZone, true)) {
+        console.log(element, 'dropped into', dropZone);
         dispatchEvent('dropped');
         addClass(element, 'dragNdrop--dropped');
-        addClass(dropElement, 'dragNdrop__dropzone--dropped');
-        dropped.push(dropElement);
-      } else {
-        removeClass(dropElement, 'dragNdrop__dropzone--dropped');
-        dropped.push(false);
+        addClass(dropZone, 'dragNdrop__dropzone--dropped');
+        dropped.push(dropZone);
       }
     }
 
     // check manually instead of using .some to support <=IE9
-    var droppedContainer = [];
-    for(var j = 0, jl = dropped.length; j < jl; j++) {
-      var el = dropped[j];
-      if(el) droppedContainer.push(el);
-    }
-    return (droppedContainer.length > 0) ? droppedContainer : false;
+    return (dropped.length > 0) ? dropped : false;
   }
 
   /**
