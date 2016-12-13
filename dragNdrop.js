@@ -114,10 +114,11 @@ function dragNdrop(options) {
   }
 
   //Event Listeners
-  if(!IE && document.addEventListener) {
+  if(document.addEventListener) {
     element.addEventListener('mousedown', eleMouseDown, false);
     element.addEventListener('touchstart', eleMouseDown, false);
   } else {
+    //fix for IE8-
     element.attachEvent('onmousedown', eleMouseDown);
     element.attachEvent('touchstart', eleMouseDown);
   }
@@ -143,19 +144,15 @@ function dragNdrop(options) {
       event = ev;
     } // get first mouse position
     // clientX/Y fallback for IE8-
-    console.log('4');
     prevPos = { x: event.pageX || event.clientX, y: event.pageY || event.clientY };
-    console.log('5');
 
     addEventListeners();
-    console.log('6');
   }
 
   //- add event listeners
   function addEventListeners() {
-    console.log('addeventlisteners');
     //Add listeners
-    if(!IE && document.addEventListener) {
+    if(document.addEventListener) {
       document.addEventListener('mousemove', eleMouseMove, false);
       document.addEventListener('touchmove', eleMouseMove, false);
       document.addEventListener('mouseup', eleMouseUp, false);
@@ -280,10 +277,8 @@ function dragNdrop(options) {
      * resized or moved on the fly. This also makes the function kinda context
      * independant.
      */
-    console.log('isElementInside params: ', element, container, drop);
-    console.log('calculations, rect, scroll: ', container.getBoundingClientRect().top, window.scrollY);
     var scroll = {
-      // fallback for IE
+      // fallback for IE9-
       x: window.scrollY || document.documentElement.scrollTop,
       y: window.scrollX || document.documentElement.scrollLeft
     };
@@ -327,13 +322,12 @@ function dragNdrop(options) {
       }
     }
 
-    // check manually instead of using .every to support <=IE9
+    // check manually instead of using .every to support IE9-
     return (inside[0] && inside[1] && inside[2] && inside[3]) ? true : false;
   }
 
   //- Put Element Back
   function putElementBack(element, rect, difference) {
-    console.log('putback');
     if(rect === 'top') {
       moveElement(element, {
         y: elementPos.y + difference,
@@ -364,7 +358,7 @@ function dragNdrop(options) {
   //- remove event listeners
   function removeEventListeners() {
     //remove listeners
-    if(!IE && document.addEventListener) {
+    if(document.addEventListener) {
       document.removeEventListener('mousemove', eleMouseMove, false);
       document.removeEventListener('touchmove', eleMouseMove, false);
       document.removeEventListener('mouseup', eleMouseUp, false);
@@ -409,7 +403,7 @@ function dragNdrop(options) {
       }
     }
 
-    // check manually instead of using .some to support <=IE9
+    // check manually instead of using .some to support IE9-
     return (dropped.length > 0) ? dropped : false;
   }
 
@@ -418,10 +412,13 @@ function dragNdrop(options) {
    */
   function dispatchEvent(name) {
     var eventing;
-    if(!IE) {
+    console.log('check events');
+    if(typeof Event === 'function') {
+      console.log('typeof');
       eventing = new Event('dragNdrop:' + name);
       element.dispatchEvent(eventing);
     } else {
+      console.log('not typeof');
       //fallback for IE9 is document.createEvent. But for IE8 and below that does not work either.
       if(document.createEvent) {
         eventing = document.createEvent('CustomEvent');
