@@ -129,13 +129,15 @@ function dragNdrop(options) {
     addClass(element, 'dragNdrop--start');
 
     // prevent text selection
-    console.log(ev);
-    console.log(ev.clientX);
-    ev.preventDefault();
-    console.log('3');
+    if(ev.preventDefault) {
+      ev.preventDefault();
+    } else {
+      //the later is for IE8-
+      ev.returnValue = false;
+    }
+
     var event;
     if ('touches' in ev) { // slight adaptations for touches
-      ev.preventDefault();
       event = ev.touches[0];
     } else {
       event = ev;
