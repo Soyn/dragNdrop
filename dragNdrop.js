@@ -99,7 +99,7 @@ function dragNdrop(options) {
   div.innerHTML = '<!--[if lt IE 9]><i id="ie-version-below-nine"></i><![endif]--><!--[if IE 9]><i id="ie-version-nine"></i><![endif]-->';
   var isIeLessThan10 = (div.getElementsByTagName('i').length == 1);
   if (isIeLessThan10) {
-    console.log('WARNING: dragNdrop: a browser older than IE 10 detected!');
+    console.log('WARNING: dragNdrop: a browser older than IE 10 detected! ', ' (use top/left position instead of transform, attachEvent instead of addEventListener and initEvent instead of new Event constructor)');
     IE = true;
     //internet explorer <9 does not support transform3d
     transform = false;
@@ -114,8 +114,13 @@ function dragNdrop(options) {
   }
 
   //Event Listeners
-  element.addEventListener('mousedown', eleMouseDown, false);
-  element.addEventListener('touchstart', eleMouseDown, false);
+  if(!IE) {
+    element.addEventListener('mousedown', eleMouseDown, false);
+    element.addEventListener('touchstart', eleMouseDown, false);
+  } else {
+    element.attachEvent('onmousedown', eleMouseDown);
+    element.attachEvent('touchstart', eleMouseDown);
+  }
 
   //Start
   function eleMouseDown(ev) {
@@ -132,13 +137,22 @@ function dragNdrop(options) {
     } else {
       event = ev;
     } // get first mouse position
-    prevPos = { x: event.pageX, y: event.pageY };
-    
+    // clientX/Y fallback for IE8-
+    prevPos = { x: event.pageX || event.clientX, y: event.pageY || event.clientY };
+
     //Add listeners
-    document.addEventListener('mousemove', eleMouseMove, false);
-    document.addEventListener('touchmove', eleMouseMove, false);
-    document.addEventListener('mouseup', eleMouseUp, false);
-    document.addEventListener('touchend', eleMouseUp, false);
+    if(!IE) {
+      document.addEventListener('mousemove', eleMouseMove, false);
+      document.addEventListener('touchmove', eleMouseMove, false);
+      document.addEventListener('mouseup', eleMouseUp, false);
+      document.addEventListener('touchend', eleMouseUp, false);
+    } else {
+      document.attachEvent('onmousemove', eleMouseMove);
+      document.attachEvent('touchmove', eleMouseMove);
+      document.attachEvent('onmouseup', eleMouseUp);
+      document.attachEvent('touchend', eleMouseUp);
+    }
+
   }
   
   //- Styles
@@ -181,11 +195,15 @@ function dragNdrop(options) {
   
   //- Get Positions
   function getPositions(element, event, constraints) {
-    var position = {
-      x: event.pageX - prevPos.x,
-      y: event.pageY - prevPos.y
+    var cusorPos = { // event.clientX/Y fallback for IE8-
+      x: event.pageX || event.clientX,
+      y: event.pageY || event.clientY
     };
-    prevPos = { x: event.pageX, y: event.pageY };
+    var position = {
+      x: cusorPos.x - prevPos.x,
+      y: cusorPos.y - prevPos.y
+    };
+    prevPos = { x: cusorPos.x, y: cusorPos.y };
     
     handleMoveElement(element, position, constraints);
   }
@@ -328,10 +346,17 @@ function dragNdrop(options) {
     if(callback) callback({element: element, dropped: dropped, dropZones: dropZones, constraints: constraints, customStyles: customStyles});
 
     //remove listeners
-    document.removeEventListener('mousemove', eleMouseMove, false);
-    document.removeEventListener('touchmove', eleMouseMove, false);
-    document.removeEventListener('mouseup', eleMouseUp, false);
-    document.removeEventListener('touchend', eleMouseUp, false);
+    if(!IE) {
+      document.removeEventListener('mousemove', eleMouseMove, false);
+      document.removeEventListener('touchmove', eleMouseMove, false);
+      document.removeEventListener('mouseup', eleMouseUp, false);
+      document.removeEventListener('touchend', eleMouseUp, false);
+    } else {
+      document.detachEvent('onmousemove', eleMouseMove, false);
+      document.detachEvent('touchmove', eleMouseMove, false);
+      document.detachEvent('onmouseup', eleMouseUp, false);
+      document.detachEvent('touchend', eleMouseUp, false);
+    }
 
     //remove styles
     if(!customStyles) document.body.style.cursor = 'inherit';
