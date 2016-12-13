@@ -419,14 +419,18 @@ function dragNdrop(options) {
    * HELPER FUNCTIONS
    */
   function dispatchEvent(name) {
+    console.log('dispatch');
     var eventing;
     if(IE) {
       eventing = document.createEvent('CustomEvent');
       eventing.initEvent('dragNdrop:' + name, true, true);
+      console.log('IE');
     } else {
       eventing = new Event('dragNdrop:' + name);
     }
+    console.log('dispatch');
     element.dispatchEvent(eventing);
+    console.log('dispatched');
   }
 
   function hasClass(el, className) {
