@@ -103,10 +103,7 @@ function dragNdrop(options) {
   var callback = options.callback;
   var transform = ('transform' in options) ? options.transform : true;
 
-  var elementPos = {
-    x: parseInt(getStyle(element, 'left')) || 0,
-    y: parseInt(getStyle(element, 'top')) || 0
-  };
+  var elementPos = {};
   var prevPos = { x: 0, y: 0 };
   var constraintElement = constraints && typeof constraints.innerHTML === "string"; //if constraints = DOM element
 
@@ -207,6 +204,7 @@ function dragNdrop(options) {
     var docStyles = document.body.style;
     docStyles.cursor = (docStyles.cursor && docStyles.cursor !== 'inherit') ? docStyles.cursor : element.style.cursor;
 
+    //positions
     var event;
     if ('touches' in ev) { // slight adaptations for touches
       event = ev.touches[0];
@@ -217,6 +215,10 @@ function dragNdrop(options) {
     prevPos = {
       x: event.pageX || event.clientX,
       y: event.pageY || event.clientY
+    };
+    elementPos = {
+      x: parseInt(getStyle(element, 'left')) || 0,
+      y: parseInt(getStyle(element, 'top')) || 0
     };
 
     addEventListeners();
