@@ -204,7 +204,8 @@ function dragNdrop(options) {
 
     //style changes
     element.style.zIndex = parseInt(element.style.zIndex) + 1;
-    document.body.style.cursor = (!document.body.style.cursor) ? element.style.cursor : document.body.style.cursor;
+    var documentCursor = document.body.style.cursor;
+    documentCursor = (documentCursor && documentCursor !== 'inherit') ? documentCursor : element.style.cursor;
 
     var event;
     if ('touches' in ev) { // slight adaptations for touches
