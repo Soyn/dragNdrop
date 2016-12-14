@@ -98,7 +98,7 @@ function dragNdrop(options) {
 
   //Setup
   var element = options.element;
-  var customStyles = options.customStyles;
+  var customStyles = ('customStyles' in options) ? options.customStyles : false;
   var constraints = options.constraints;
   var dropZones = options.dropZones;
   var callback = options.callback;
