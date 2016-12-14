@@ -103,7 +103,10 @@ function dragNdrop(options) {
   var callback = options.callback;
   var transform = ('transform' in options) ? options.transform : true;
 
-  var elementPos = { x: getStyle(element, 'left') || 0, y: getStyle(element, 'top') || 0 };
+  var elementPos = {
+    x: parseInt(getStyle(element, 'left')) || 0,
+    y: parseInt(getStyle(element, 'top')) || 0
+  };
   var prevPos = { x: 0, y: 0 };
   var constraintElement = constraints && typeof constraints.innerHTML === "string"; //if constraints = DOM element
 
@@ -239,15 +242,15 @@ function dragNdrop(options) {
   
   //- Get Positions
   function getPositions(element, event, constraints) {
-    var cusorPos = { // event.clientX/Y fallback for IE8-
+    var cursorPos = { // event.clientX/Y fallback for IE8-
       x: event.pageX || event.clientX,
       y: event.pageY || event.clientY
     };
     var position = {
-      x: cusorPos.x - prevPos.x,
-      y: cusorPos.y - prevPos.y
+      x: cursorPos.x - prevPos.x,
+      y: cursorPos.y - prevPos.y
     };
-    prevPos = { x: cusorPos.x, y: cusorPos.y };
+    prevPos = { x: cursorPos.x, y: cursorPos.y };
     
     handleMoveElement(element, position, constraints);
   }
