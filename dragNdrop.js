@@ -97,11 +97,11 @@ function dragNdrop(options) {
 
   //Setup
   var element = options.element;
-  var customStyles = options.customStyles || false;
-  var constraints = options.constraints || false;
-  var dropZones = options.dropZones || false;
-  var callback = options.callback || function(){};
-  var transform = options.transform || true;
+  var customStyles = options.customStyles;
+  var constraints = options.constraints;
+  var dropZones = options.dropZones;
+  var callback = options.callback;
+  var transform = (options.transform) ? options.transform : true;
 
   var elementPos = { x: 0, y: 0 };
   var prevPos = { x: 0, y: 0 };
