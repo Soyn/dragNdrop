@@ -47,8 +47,7 @@ v1.1.0
  Properties
 
  ** @element        node              single DOM element                          (Mandatory!) default: NaN
- ** @customStyles   boolean           false / 'all' / style object                (optional) default: false
- ***                                                  style object example = { position: 'absolute', zIndex: '1', cursor: 'pointer'}
+ ** @customStyles   boolean           false / true                                (optional) default: false
  ** @transform      boolean           true / false                                (optional) default: true
  ** @constraints    string or node    false / 'x' / 'y' / single DOM element      (optional) default: false
  ** @dropZones      nodes             false / array of DOM elements               (optional) default: false
@@ -98,7 +97,7 @@ function dragNdrop(options) {
 
   //Setup
   var element = options.element;
-  var customStyles = ('customStyles' in options) ? options.customStyles : false;
+  var customStyles = options.customStyles;
   var constraints = options.constraints;
   var dropZones = options.dropZones;
   var callback = options.callback;
@@ -127,7 +126,27 @@ function dragNdrop(options) {
     }
   }
 
-  //Event Listeners
+  //- Styles
+  if(!customStyles) setStyles(element, customStyles);
+  function setStyles(element, customStyles) {
+    var cursor;
+    if(constraints && constraints === 'x' || constraints === 'y') {
+      cursor = constraints === 'x' ? 'col-resize' : 'row-resize';
+    } else { cursor = 'move'; }
+
+    var styles = {
+      position: element.style.position || (!transform) ? 'relative' : '',
+      zIndex: element.style.zIndex || '999',
+      cursor: element.style.cursor || cursor
+    };
+
+    element.style.position = styles.position;
+    element.style.zIndex = styles.zIndex;
+    element.style.cursor = styles.cursor;
+  }
+  var documentCursorStyles = document.body.style.cursor || 'inherit';
+
+  //- Event Listeners
   if(document.addEventListener) {
     element.addEventListener('mousedown', eleMouseDown, false);
     element.addEventListener('touchstart', eleMouseDown, false);
@@ -151,6 +170,10 @@ function dragNdrop(options) {
       ev.returnValue = false;
     }
 
+    //style changes
+    element.style.zIndex = element.style.zIndex + 1;
+    document.body.style.cursor = (!document.body.style.cursor) ? element.style.cursor : document.body.style.cursor;
+
     var event;
     if ('touches' in ev) { // slight adaptations for touches
       event = ev.touches[0];
@@ -158,7 +181,10 @@ function dragNdrop(options) {
       event = ev;
     } // get first mouse position
     // clientX/Y fallback for IE8-
-    prevPos = { x: event.pageX || event.clientX, y: event.pageY || event.clientY };
+    prevPos = {
+      x: event.pageX || event.clientX,
+      y: event.pageY || event.clientY
+    };
 
     addEventListeners();
   }
@@ -179,25 +205,6 @@ function dragNdrop(options) {
       document.attachEvent('touchend', eleMouseUp);
     }
   }
-  
-  //- Styles
-  if(!customStyles || customStyles.toLowerCase() !== 'all') setStyles(element, customStyles);
-  function setStyles(element, customStyles) {
-    var cursor;
-    if(constraints && constraints === 'x' || constraints === 'y') {
-      cursor = constraints === 'x' ? 'col-resize' : 'row-resize';
-    } else { cursor = 'move'; }
-
-    var styles = {
-      position: customStyles.position || (!transform) ? 'relative' : '',
-      zIndex: customStyles.zIndex || '999',
-      cursor: customStyles.cursor || cursor
-    };
-
-    element.style.position = styles.position;
-    element.style.zIndex = styles.zIndex;
-    element.style.cursor = styles.cursor;
-  }
 
   //- Drag
   function eleMouseMove(ev) {
@@ -208,15 +215,6 @@ function dragNdrop(options) {
     addClass(element, 'dragNdrop--drag');
 
     if(dropZones) prepareDrop(element, dropZones);
-
-    //style changes
-    if(!customStyles || customStyles.toLowerCase() !== 'all') {
-      if (element.style.zIndex !== '9999') {
-        element.style.zIndex = (customStyles.zIndex) ? customStyles.zIndex + 1 : '9999';
-      } else if (!customStyles.cursor && document.body.style.cursor !== element.style.cursor) {
-        document.body.style.cursor = element.style.cursor;
-      }
-    }
 
     if ('touches' in ev) { // slight adaptations for touches
       ev.preventDefault();
@@ -379,12 +377,8 @@ function dragNdrop(options) {
     removeEventListeners();
 
     //style resets
-    if(!customStyles || customStyles.toLowerCase() !== 'all') {
-      element.style.zIndex = (customStyles.zIndex) ? customStyles.zIndex - 1 : '999';
-      if (!customStyles.cursor) {
-        document.body.style.cursor = 'inherit';
-      }
-    }
+    element.style.zIndex = element.style.zIndex - 1;
+    document.body.style.cursor = documentCursorStyles;
   }
 
   //- remove event listeners
