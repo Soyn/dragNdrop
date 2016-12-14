@@ -63,9 +63,9 @@ v1.1.0
  ********* The MIT License (MIT) **********
  ******************************************
 
- Copyright (c) 2015 ThibaultJanBeyer
+ Copyright (c) 2016 ThibaultJanBeyer
  web: http://www.thibaultjanbeyer.com/
- github: 
+ github: https://github.com/ThibaultJanBeyer/dragNdrop
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -284,6 +284,8 @@ function dragNdrop(options) {
   
   //- Is element within container?
   function isElementInside(element, container, drop) {
+    // An element should not be dropable into itself
+    if (element === container) return false;
     /**
      * calculating everything here on every move consumes more performance
      * but makes sure to get the right positions even if the containers are
