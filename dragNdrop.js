@@ -367,7 +367,10 @@ function dragNdrop(options) {
     if(callback) callback({element: element, dropped: dropped, dropZones: dropZones, constraints: constraints, customStyles: customStyles});
 
     removeEventListeners();
-    if(!customStyles) document.body.style.cursor = 'inherit';
+    if(!customStyles) {
+      document.body.style.cursor = 'inherit';
+      element.style.zIndex = '999';
+    }
   }
 
   //- remove event listeners
