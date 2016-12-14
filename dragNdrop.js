@@ -101,7 +101,7 @@ function dragNdrop(options) {
   var constraints = options.constraints;
   var dropZones = options.dropZones;
   var callback = options.callback;
-  var transform = (options.transform) ? options.transform : true;
+  var transform = ('transform' in options) ? options.transform : true;
 
   var elementPos = { x: 0, y: 0 };
   var prevPos = { x: 0, y: 0 };
