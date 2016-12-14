@@ -47,7 +47,8 @@ v1.1.0
  Properties
 
  ** @element        node              single DOM element                          (Mandatory!) default: NaN
- ** @customStyles   boolean           false / true                                (optional) default: false
+ ** @customStyles   boolean           false / 'all' / style object                (optional) default: false
+ ***                                  style object example = { position: 'absolute', zIndex: '1', cursor: 'pointer'}
  ** @transform      boolean           true / false                                (optional) default: true
  ** @constraints    string or node    false / 'x' / 'y' / single DOM element      (optional) default: false
  ** @dropZones      nodes             false / array of DOM elements               (optional) default: false
@@ -210,8 +211,8 @@ function dragNdrop(options) {
 
     //style changes
     if(customStyles.toLowerCase() !== 'all') {
-      if (!customStyles.zIndex && element.style.zIndex !== '9999') {
-        element.style.zIndex = '9999';
+      if (element.style.zIndex !== '9999') {
+        element.style.zIndex = (customStyles.zIndex) ? customStyles.zIndex + 1 : '9999';
       } else if (!customStyles.cursor && document.body.style.cursor !== element.style.cursor) {
         document.body.style.cursor = element.style.cursor;
       }
@@ -379,9 +380,8 @@ function dragNdrop(options) {
 
     //style resets
     if(customStyles.toLowerCase() !== 'all') {
-      if (!customStyles.zIndex) {
-        element.style.zIndex = '999';
-      } else if (!customStyles.cursor) {
+      element.style.zIndex = (customStyles.zIndex) ? customStyles.zIndex - 1 : '999';
+      if (!customStyles.cursor) {
         document.body.style.cursor = 'inherit';
       }
     }
