@@ -180,23 +180,22 @@ function dragNdrop(options) {
   }
   
   //- Styles
-  if(!customStyles) setStyles(element);
-  function setStyles(element) {
-    var cursor, style = element.style;
-
-    if(!transform) {
-      style.position = 'relative';
-      elementPos = {
-        x: element.style.left || 0,
-        y: element.style.top || 0
-      };
-    }
-
-    style.zIndex = '999';
+  if(customStyles.toLowerCase() !== 'all') setStyles(element, customStyles);
+  function setStyles(element, customStyles) {
+    var cursor;
     if(constraints && constraints === 'x' || constraints === 'y') {
       cursor = constraints === 'x' ? 'col-resize' : 'row-resize';
     } else { cursor = 'move'; }
-    style.cursor = cursor;
+
+    var styles = {
+      position: customStyles.position || (!transform) ? 'relative' : '',
+      zIndex: customStyles.zIndex || '999',
+      cursor: customStyles.cursor || cursor
+    };
+
+    element.style.position = styles.position;
+    element.style.zIndex = styles.zIndex;
+    element.style.cursor = styles.cursor;
   }
 
   //- Drag
@@ -208,9 +207,14 @@ function dragNdrop(options) {
     addClass(element, 'dragNdrop--drag');
 
     if(dropZones) prepareDrop(element, dropZones);
-    if(!customStyles && element.style.zIndex !== '9999' || document.body.style.cursor !== element.style.cursor) {
-      element.style.zIndex = '9999';
-      document.body.style.cursor = element.style.cursor;
+
+    //style changes
+    if(customStyles.toLowerCase() !== 'all') {
+      if (!customStyles.zIndex && element.style.zIndex !== '9999') {
+        element.style.zIndex = '9999';
+      } else if (!customStyles.cursor && document.body.style.cursor !== element.style.cursor) {
+        document.body.style.cursor = element.style.cursor;
+      }
     }
 
     if ('touches' in ev) { // slight adaptations for touches
@@ -372,9 +376,14 @@ function dragNdrop(options) {
     if(callback) callback({element: element, dropped: dropped, dropZones: dropZones, constraints: constraints, customStyles: customStyles});
 
     removeEventListeners();
-    if(!customStyles) {
-      document.body.style.cursor = 'inherit';
-      element.style.zIndex = '999';
+
+    //style resets
+    if(customStyles.toLowerCase() !== 'all') {
+      if (!customStyles.zIndex) {
+        element.style.zIndex = '999';
+      } else if (!customStyles.cursor) {
+        document.body.style.cursor = 'inherit';
+      }
     }
   }
 
