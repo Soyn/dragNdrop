@@ -48,7 +48,7 @@ v1.1.0
 
  ** @element        node              single DOM element                          (Mandatory!) default: NaN
  ** @customStyles   boolean           false / 'all' / style object                (optional) default: false
- ***                                  style object example = { position: 'absolute', zIndex: '1', cursor: 'pointer'}
+ ***                                                  style object example = { position: 'absolute', zIndex: '1', cursor: 'pointer'}
  ** @transform      boolean           true / false                                (optional) default: true
  ** @constraints    string or node    false / 'x' / 'y' / single DOM element      (optional) default: false
  ** @dropZones      nodes             false / array of DOM elements               (optional) default: false
@@ -181,7 +181,7 @@ function dragNdrop(options) {
   }
   
   //- Styles
-  if(customStyles.toLowerCase() !== 'all') setStyles(element, customStyles);
+  if(!customStyles || customStyles.toLowerCase() !== 'all') setStyles(element, customStyles);
   function setStyles(element, customStyles) {
     var cursor;
     if(constraints && constraints === 'x' || constraints === 'y') {
@@ -210,7 +210,7 @@ function dragNdrop(options) {
     if(dropZones) prepareDrop(element, dropZones);
 
     //style changes
-    if(customStyles.toLowerCase() !== 'all') {
+    if(!customStyles || customStyles.toLowerCase() !== 'all') {
       if (element.style.zIndex !== '9999') {
         element.style.zIndex = (customStyles.zIndex) ? customStyles.zIndex + 1 : '9999';
       } else if (!customStyles.cursor && document.body.style.cursor !== element.style.cursor) {
@@ -379,7 +379,7 @@ function dragNdrop(options) {
     removeEventListeners();
 
     //style resets
-    if(customStyles.toLowerCase() !== 'all') {
+    if(!customStyles || customStyles.toLowerCase() !== 'all') {
       element.style.zIndex = (customStyles.zIndex) ? customStyles.zIndex - 1 : '999';
       if (!customStyles.cursor) {
         document.body.style.cursor = 'inherit';
