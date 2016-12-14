@@ -103,7 +103,7 @@ function dragNdrop(options) {
   var callback = options.callback;
   var transform = ('transform' in options) ? options.transform : true;
 
-  var elementPos = { x: 0, y: 0 };
+  var elementPos = { x: getStyle(element, 'left') || 0, y: getStyle(element, 'top') || 0 };
   var prevPos = { x: 0, y: 0 };
   var constraintElement = constraints && typeof constraints.innerHTML === "string"; //if constraints = DOM element
 
