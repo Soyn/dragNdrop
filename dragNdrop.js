@@ -187,7 +187,7 @@ function dragNdrop(options) {
     }
 
     //style changes
-    element.style.zIndex = element.style.zIndex + 1;
+    element.style.zIndex = parseInt(element.style.zIndex) + 1;
     document.body.style.cursor = (!document.body.style.cursor) ? element.style.cursor : document.body.style.cursor;
 
     var event;
@@ -393,7 +393,7 @@ function dragNdrop(options) {
     removeEventListeners();
 
     //style resets
-    element.style.zIndex = element.style.zIndex - 1;
+    element.style.zIndex = parseInt(element.style.zIndex) - 1;
     document.body.style.cursor = documentCursorStyles;
   }
 
