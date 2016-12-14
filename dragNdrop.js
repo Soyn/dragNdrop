@@ -139,22 +139,22 @@ function dragNdrop(options) {
     //zIndex
     var tempZindex = getStyle(element, 'zIndex');
     if(tempZindex && tempZindex !== 'auto') {
-      element.style.position = tempZindex;
+      element.style.zIndex = tempZindex;
     } else {
-      element.style.position = '999';
+      element.style.zIndex = '999';
     }
     //cursor
     var tempCursor = getStyle(element, 'cursor');
     if(tempCursor && tempZindex !== 'auto') {
-      element.style.position = tempCursor;
+      element.style.cursor = tempCursor;
     } else {
       if(constraints && constraints === 'x' || constraints === 'y') {
-        element.style.position = constraints === 'x' ? 'col-resize' : 'row-resize';
+        element.style.cursor = constraints === 'x' ? 'col-resize' : 'row-resize';
       } else {
-        element.style.position = 'move';
+        element.style.cursor = 'move';
       }
     }
-    console.log(getStyle(element, 'position'), getStyle(element, 'zIndex'), getStyle(element, 'cursor'), styles);
+    console.log(getStyle(element, 'position'), getStyle(element, 'zIndex'), getStyle(element, 'cursor'), element.style.position, element.style.zIndex, element.style.cursor);
   }
   var documentCursorStyles = document.body.style.cursor || 'inherit';
 
