@@ -129,16 +129,15 @@ function dragNdrop(options) {
   //- Styles
   if(!customStyles) setStyles(element, customStyles);
   function setStyles(element, customStyles) {
-    console.log(element.style);
     var cursor;
     if(constraints && constraints === 'x' || constraints === 'y') {
       cursor = constraints === 'x' ? 'col-resize' : 'row-resize';
     } else { cursor = 'move'; }
 
     var styles = {
-      position: element.style.position || (!transform) ? 'relative' : '',
-      zIndex: element.style.zIndex || '999',
-      cursor: element.style.cursor || cursor
+      position: getStyle(element, 'position') || (!transform) ? 'relative' : '',
+      zIndex: getStyle(element, 'zIndex') || '999',
+      cursor: getStyle(element, 'cursor') || cursor
     };
 
     element.style.position = styles.position;
@@ -462,26 +461,35 @@ function dragNdrop(options) {
 
   function addClass(el, className) {
     if(!hasClass(el, className)) {
-
       if (el.classList) {
         el.classList.add(className);
       } else {
         el.className += " " + className;
       }
-
     }
   }
 
   function removeClass(el, className) {
     if(hasClass(el, className)) {
-
       if (el.classList) {
         el.classList.remove(className);
       } else {
         var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
         el.className=el.className.replace(reg, ' ');
       }
+    }
+  }
 
+  function getStyle(el, prop) {
+    if(window.getComputedStyle) {
+      return window.getComputedStyle(el, null)[prop];
+    // same as window.getComputedStyle see : https://developer.mozilla.org/en-US/docs/Web/API/Window/getComputedStyle#defaultView
+    } else if (document.defaultView && document.defaultView.getComputedStyle) {
+      return document.defaultView.getComputedStyle(el, null)[prop];
+    } else if (el.currentStyle) {
+      return el.currentStyle[prop];
+    } else {
+      return el.style[prop];
     }
   }
 }
