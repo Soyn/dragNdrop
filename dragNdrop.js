@@ -139,6 +139,7 @@ function dragNdrop(options) {
       zIndex: getStyle(element, 'zIndex') || '999',
       cursor: getStyle(element, 'cursor') || cursor
     };
+    console.log(getStyle(element, 'position'), styles);
 
     element.style.position = styles.position;
     element.style.zIndex = styles.zIndex;
