@@ -129,11 +129,25 @@ function dragNdrop(options) {
     }
   }
 
+
   //- Styles
-  if(!customStyles) setStyles(element, customStyles);
-  function setStyles(element, customStyles) {
+  setStyles(element);
+  function setStyles(element) {
+    if(customStyles) {
+      setCustomStyles(element);
+    } else {
+      element.style.position = (!transform) ? 'relative' : 'auto';
+      element.style.zIndex = '999';
+      if(constraints && constraints === 'x' || constraints === 'y') {
+        element.style.cursor = constraints === 'x' ? 'col-resize' : 'row-resize';
+      } else {
+        element.style.cursor = 'move';
+      }
+    }
+  }
+
+  function setCustomStyles(element) {
     //position
-    console.log(getStyle(element, 'position'), getStyle(element, 'zIndex'), getStyle(element, 'cursor'));
     var tempPos = getStyle(element, 'position');
     if(tempPos && tempPos !== 'static') {
       element.style.position = tempPos;
@@ -158,9 +172,10 @@ function dragNdrop(options) {
         element.style.cursor = 'move';
       }
     }
-    console.log(element.style.position, element.style.zIndex, element.style.cursor);
   }
+
   var documentCursorStyles = document.body.style.cursor || 'inherit';
+
 
   //- Event Listeners
   if(document.addEventListener) {
@@ -171,6 +186,7 @@ function dragNdrop(options) {
     element.attachEvent('onmousedown', eleMouseDown);
     element.attachEvent('touchstart', eleMouseDown);
   }
+
 
   //- Start
   function eleMouseDown(ev) {
@@ -205,6 +221,7 @@ function dragNdrop(options) {
     addEventListeners();
   }
 
+
   //- add event listeners
   function addEventListeners() {
     //Add listeners
@@ -221,6 +238,7 @@ function dragNdrop(options) {
       document.attachEvent('touchend', eleMouseUp);
     }
   }
+
 
   //- Drag
   function eleMouseMove(ev) {
@@ -240,6 +258,7 @@ function dragNdrop(options) {
     }
     getPositions(element, event, constraints);
   }
+
   
   //- Get Positions
   function getPositions(element, event, constraints) {
@@ -255,6 +274,7 @@ function dragNdrop(options) {
     
     handleMoveElement(element, position, constraints);
   }
+
   
   //- Handle Move
   function handleMoveElement(element, position, constraints) {
@@ -267,6 +287,7 @@ function dragNdrop(options) {
       });
     }
   }
+
   
   //- Handle Constraints
   function handleConstraints(element, position, constraints) {
@@ -292,6 +313,7 @@ function dragNdrop(options) {
     }
   }
 
+
   //- Move Element
   function moveElement(element, newPosition) {
     // set element position to the new position
@@ -305,6 +327,7 @@ function dragNdrop(options) {
       element.style.top = newPosition.y + 'px';
     }
   }
+
   
   //- Is element within container?
   function isElementInside(element, container, drop) {
@@ -365,6 +388,7 @@ function dragNdrop(options) {
     return (inside[0] && inside[1] && inside[2] && inside[3]);
   }
 
+
   //- Put Element Back
   function putElementBack(element, rect, difference) {
     if(rect === 'top') {
@@ -379,6 +403,7 @@ function dragNdrop(options) {
       });
     }
   }
+
 
   //- Stop
   function eleMouseUp() {
@@ -397,6 +422,7 @@ function dragNdrop(options) {
     document.body.style.cursor = documentCursorStyles;
   }
 
+
   //- remove event listeners
   function removeEventListeners() {
     //remove listeners
@@ -414,6 +440,7 @@ function dragNdrop(options) {
     }
   }
 
+
   //- prepare drop
   function prepareDrop(element, dropZones) {
     removeClass(element, 'dragNdrop--dropped');
@@ -425,6 +452,7 @@ function dragNdrop(options) {
       addClass(dropElement, 'dragNdrop__dropzone--ready');
     }
   }
+
 
   //- handle drop
   function handleDrop(element, dropZones) {
@@ -448,6 +476,7 @@ function dragNdrop(options) {
     // check manually instead of using .some to support IE9-
     return (dropped.length > 0) ? dropped : false;
   }
+
 
   /**
    * HELPER FUNCTIONS
