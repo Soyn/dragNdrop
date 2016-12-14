@@ -183,14 +183,19 @@ function dragNdrop(options) {
   if(!customStyles) setStyles(element);
   function setStyles(element) {
     var cursor, style = element.style;
-    if(!transform) style.position = 'relative';
-    style.zIndex = '999';
 
+    if(!transform) {
+      style.position = 'relative';
+      elementPos = {
+        x: element.style.left || 0,
+        y: element.style.top || 0
+      };
+    }
+
+    style.zIndex = '999';
     if(constraints && constraints === 'x' || constraints === 'y') {
       cursor = constraints === 'x' ? 'col-resize' : 'row-resize';
-    } else {
-      cursor = 'move';
-    }
+    } else { cursor = 'move'; }
     style.cursor = cursor;
   }
 
