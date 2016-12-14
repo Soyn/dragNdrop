@@ -129,21 +129,32 @@ function dragNdrop(options) {
   //- Styles
   if(!customStyles) setStyles(element, customStyles);
   function setStyles(element, customStyles) {
-    var cursor;
-    if(constraints && constraints === 'x' || constraints === 'y') {
-      cursor = constraints === 'x' ? 'col-resize' : 'row-resize';
-    } else { cursor = 'move'; }
-
-    var styles = {
-      position: getStyle(element, 'position') || (!transform) ? 'relative' : '',
-      zIndex: getStyle(element, 'zIndex') || '999',
-      cursor: getStyle(element, 'cursor') || cursor
-    };
+    //position
+    var tempPos = getStyle(element, 'position');
+    if(tempPos && tempPos !== 'static') {
+      element.style.position = tempPos;
+    } else {
+      element.style.position = (!transform) ? 'relative' : 'auto';
+    }
+    //zIndex
+    var tempZindex = getStyle(element, 'zIndex');
+    if(tempZindex && tempZindex !== 'auto') {
+      element.style.position = tempZindex;
+    } else {
+      element.style.position = '999';
+    }
+    //cursor
+    var tempCursor = getStyle(element, 'cursor');
+    if(tempCursor && tempZindex !== 'auto') {
+      element.style.position = tempCursor;
+    } else {
+      if(constraints && constraints === 'x' || constraints === 'y') {
+        element.style.position = constraints === 'x' ? 'col-resize' : 'row-resize';
+      } else {
+        element.style.position = 'move';
+      }
+    }
     console.log(getStyle(element, 'position'), getStyle(element, 'zIndex'), getStyle(element, 'cursor'), styles);
-
-    element.style.position = styles.position;
-    element.style.zIndex = styles.zIndex;
-    element.style.cursor = styles.cursor;
   }
   var documentCursorStyles = document.body.style.cursor || 'inherit';
 
