@@ -129,6 +129,7 @@ function dragNdrop(options) {
   //- Styles
   if(!customStyles) setStyles(element, customStyles);
   function setStyles(element, customStyles) {
+    console.log(element.style);
     var cursor;
     if(constraints && constraints === 'x' || constraints === 'y') {
       cursor = constraints === 'x' ? 'col-resize' : 'row-resize';
