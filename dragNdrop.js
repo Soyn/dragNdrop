@@ -133,6 +133,7 @@ function dragNdrop(options) {
   if(!customStyles) setStyles(element, customStyles);
   function setStyles(element, customStyles) {
     //position
+    console.log(getStyle(element, 'position'), getStyle(element, 'zIndex'), getStyle(element, 'cursor'));
     var tempPos = getStyle(element, 'position');
     if(tempPos && tempPos !== 'static') {
       element.style.position = tempPos;
@@ -157,7 +158,7 @@ function dragNdrop(options) {
         element.style.cursor = 'move';
       }
     }
-    console.log(getStyle(element, 'position'), getStyle(element, 'zIndex'), getStyle(element, 'cursor'), element.style.position, element.style.zIndex, element.style.cursor);
+    console.log(element.style.position, element.style.zIndex, element.style.cursor);
   }
   var documentCursorStyles = document.body.style.cursor || 'inherit';
 
