@@ -108,16 +108,6 @@ var dragNdrop = function(options) {
   var prevPos = { x: 0, y: 0 };
   var constraintElement = constraints && typeof constraints.innerHTML === "string"; //if constraints = DOM element
 
-  // //check for old internet explorer versions
-  // var div = document.createElement('div');
-  // div.innerHTML = '<!--[if lt IE 9]><i id="ie-version-below-nine"></i><![endif]--><!--[if IE 9]><i id="ie-version-nine"></i><![endif]-->';
-  // var isIeLessThan10 = (div.getElementsByTagName('i').length == 1);
-  // if (isIeLessThan10) {
-  //   console.log('WARNING: dragNdrop: a browser older than IE 10 detected! ', ' (use top/left position instead of transform, attachEvent instead of addEventListener and initEvent instead of new Event constructor)');
-  //   console.log('WARNING: dragNdrop: the tool will probably work but please do yourself a favor and update your browser');
-  //   //internet explorer <9 does not support transform3d
-  //   useTransform = false;
-  // }
   //check if browser supports hardware accelerated css
   if(!has3d()) {
     console.log('WARNING: dragNdrop: your browser does not support hardware accelerated css. The plugin will still work but do yourself a favor and update your browser.');
